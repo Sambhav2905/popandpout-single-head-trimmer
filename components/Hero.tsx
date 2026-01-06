@@ -82,7 +82,7 @@ const Hero: React.FC = () => {
           <div className="zoom-container aspect-square bg-white rounded-2xl overflow-hidden border border-gray-100 flex items-center justify-center cursor-zoom-in shadow-sm">
             <img 
               src={PRODUCT_IMAGES[activeImage]} 
-              alt="Pop & Pout 2-in-1 Trimmer" 
+              alt="Pop & Pout Trimmer" 
               className="w-full h-full object-cover" 
             />
           </div>
@@ -116,7 +116,7 @@ const Hero: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-[40px] font-bold text-[#1A1A1A] leading-[1.15] font-serif">
-              Pop & Pout Compact 2-in-1 <span className="text-[#6B21A8]">Rechargeable</span> Trimmer
+              Pop & Pout Compact <span className="text-[#6B21A8]">Rechargeable</span> Trimmer
             </h1>
 
             <div className="flex items-center gap-2">
