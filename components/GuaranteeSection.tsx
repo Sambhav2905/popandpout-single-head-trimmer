@@ -12,7 +12,7 @@ const GuaranteeSection: React.FC = () => {
         </div>
         <h2 className="text-3xl md:text-5xl font-bold mb-6 font-serif text-[#1A1A1A]">7-Day Money Back Guarantee</h2>
         <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          We are so confident that you'll love the Pop & Pout 2-in-1 Trimmer that we offer a <strong>No-Questions-Asked 7-Day Money Back Guarantee</strong>. If you are not satisfied, we'll refund your money.
+          We are so confident that you'll love the Pop & Pout Trimmer that we offer a <strong>No-Questions-Asked 7-Day Money Back Guarantee</strong>. If you are not satisfied, we'll refund your money.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
