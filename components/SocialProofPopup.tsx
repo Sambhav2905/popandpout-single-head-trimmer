@@ -8,7 +8,31 @@ const RECENT_PURCHASES = [
   { name: 'Sneha', city: 'Bangalore' },
   { name: 'Mehak', city: 'Chandigarh' },
   { name: 'Ritu', city: 'Pune' },
-  { name: 'Kavita', city: 'Ahmedabad' }
+  { name: 'Kavita', city: 'Ahmedabad' },
+  { name: 'Saanvi', city: 'Hyderabad' },
+  { name: 'Kiara', city: 'Chennai' },
+  { name: 'Navya', city: 'Kolkata' },
+  { name: 'Diya', city: 'Surat' },
+  { name: 'Myra', city: 'Jaipur' },
+  { name: 'Aarya', city: 'Lucknow' },
+  { name: 'Shanaya', city: 'Indore' },
+  { name: 'Siya', city: 'Bhopal' },
+  { name: 'Ishani', city: 'Patna' },
+  { name: 'Vanya', city: 'Nashik' },
+  { name: 'Lavanya', city: 'Nagpur' },
+  { name: 'Zara', city: 'Ludhiana' },
+  { name: 'Avni', city: 'Vadodara' },
+  { name: 'Aaradhya', city: 'Gurugram' },
+  { name: 'Tanvi', city: 'Coimbatore' },
+  { name: 'Khushi', city: 'Visakhapatnam' },
+  { name: 'Ruhi', city: 'Bhubaneswar' },
+  { name: 'Ira', city: 'Mysuru' },
+  { name: 'Jiya', city: 'Kochi' },
+  { name: 'Samaira', city: 'Dehradun' },
+  { name: 'Aarna', city: 'Raipur' },
+  { name: 'Prisha', city: 'Guwahati' },
+  { name: 'Tisha', city: 'Ranchi' },
+  { name: 'Amira', city: 'Jammu' }
 ];
 
 const SocialProofPopup: React.FC = () => {
