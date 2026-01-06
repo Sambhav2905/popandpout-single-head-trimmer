@@ -190,7 +190,7 @@ const Hero: React.FC = () => {
           </button>
           
           <p className="text-center mt-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest flex items-center justify-center gap-2">
-            <Truck className="w-4 h-4" /> Free Delivery Pan India + COD Available
+            <Truck className="w-4 h-4" /> Free Delivery Pan India + COD Available + 10% off on prepaid orders
           </p>
         </div>
       </div>
