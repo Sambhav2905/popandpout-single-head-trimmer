@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Check, Truck, Clock, ShoppingCart, ShieldCheck, Zap, X, Gift } from 'lucide-react';
+import { Star, Check, Truck, Clock, ShoppingCart, ShieldCheck, Zap, X, Gift, Users } from 'lucide-react';
 
 const PRODUCT_IMAGES = [
   '/images/hero1.png',
@@ -21,12 +21,27 @@ const Hero: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [orderStatus, setOrderStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   
+  // Live Counter State
+  const [viewers, setViewers] = useState(Math.floor(Math.random() * (120 - 40 + 1)) + 40);
+
   // Form Data
   const [orderData, setOrderData] = useState({ name: '', phone: '', address: '', pincode: '', city: '' });
 
   // Pricing Logic
   const price = packType === 'single' ? 299 : 500;
   const prepaidPrice = Math.round(price * 0.9); // 10% Discount applied automatically
+
+  // Live Counter Effect
+  useEffect(() => {
+    const viewerInterval = setInterval(() => {
+      setViewers(prev => {
+        const delta = Math.floor(Math.random() * 7) - 3; // -3 to +3 jitter
+        const newVal = prev + delta;
+        return newVal < 30 ? 30 : newVal > 150 ? 150 : newVal;
+      });
+    }, 3000);
+    return () => clearInterval(viewerInterval);
+  }, []);
 
   // --- ORDER HANDLING ---
   const saveOrderToSheet = async (id: string, type: string, finalPrice: number) => {
@@ -44,7 +59,6 @@ const Hero: React.FC = () => {
     };
 
     try {
-      // mode: 'no-cors' is required for Google Apps Script
       await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -54,7 +68,6 @@ const Hero: React.FC = () => {
       setOrderStatus('success');
     } catch (err) {
       console.error("Sheet Error:", err);
-      // Even if Google Sheet fails, we show success to customer but ask them to verify
       setOrderStatus('success');
     }
   };
@@ -67,7 +80,7 @@ const Hero: React.FC = () => {
 
     const options = {
       key: RAZORPAY_KEY,
-      amount: prepaidPrice * 100, // Amount in paise
+      amount: prepaidPrice * 100, 
       currency: "INR",
       name: "Pop & Pout",
       description: `Prepaid Order: ${packType === 'single' ? 'Individual' : 'Duo'} Pack`,
@@ -110,11 +123,19 @@ const Hero: React.FC = () => {
         {/* Right: Sales Info */}
         <div className="flex flex-col">
           <div className="mb-6">
-             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-[#6B21A8] text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
-               <Zap className="w-3 h-3 fill-current" /> India's Most Loved Grooming Tool
+             <div className="flex flex-wrap items-center gap-3 mb-4">
+               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-[#6B21A8] text-[10px] font-black uppercase tracking-widest rounded-full">
+                 <Zap className="w-3 h-3 fill-current" /> India's Most Loved Grooming Tool
+               </div>
+               {/* LIVE COUNTER ADDED BACK HERE */}
+               <div className="flex items-center gap-1.5 px-3 py-1 bg-purple-50 border border-purple-100 rounded-full text-[#6B21A8] text-[10px] font-black uppercase tracking-widest animate-pulse">
+                  <Users className="w-3.5 h-3.5" />
+                  {viewers} Viewing Now
+               </div>
              </div>
+
              <h1 className="text-4xl md:text-5xl font-bold font-serif leading-tight text-[#1A1A1A]">
-               Pop & Pout <span className="text-[#6B21A8]"></span> Trimmer
+               Pop & Pout <span className="text-[#6B21A8]">2-in-1</span> Trimmer
              </h1>
              <div className="flex items-center gap-2 mt-4">
               <div className="flex text-yellow-400">
@@ -186,7 +207,7 @@ const Hero: React.FC = () => {
                   <button onClick={handlePrepaid} className="w-full bg-[#6B21A8] text-white py-5 rounded-2xl font-black shadow-lg shadow-purple-200 hover:bg-purple-700 transition-colors">
                     {orderStatus === 'loading' ? 'Processing...' : `PAY ONLINE - ₹${prepaidPrice} (10% OFF)`}
                   </button>
-                  <button onClick={handleCOD} className="w-full bg-gray-50 text-gray-500 py-4 rounded-2xl font-bold border border-gray-100 hover:bg-gray-100 transition-colors">
+                  <button onClick={() => saveOrderToSheet('COD-PENDING', 'COD', price)} className="w-full bg-gray-50 text-gray-500 py-4 rounded-2xl font-bold border border-gray-100 hover:bg-gray-100 transition-colors">
                     ORDER CASH ON DELIVERY - ₹{price}
                   </button>
                 </div>
