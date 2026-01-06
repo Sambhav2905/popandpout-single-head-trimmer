@@ -38,7 +38,7 @@ const Hero: React.FC = () => {
 
   // --- RAZORPAY PAYMENT LOGIC ---
   const handlePayment = () => {
-    const price = packType === 'single' ? 499 : 749;
+    const price = packType === 'single' ? 399 : 649;
     
     const options = {
       key: "YOUR_RAZORPAY_KEY_ID", // REPLACE THIS with your key from Razorpay Dashboard
