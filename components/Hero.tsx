@@ -6,8 +6,9 @@ const PRODUCT_IMAGES = [
   '/images/hero1.png',
   '/images/model-holding.png',
   '/images/model-mirror.png',
-  '/images/2-products.png',
-  '/images/hero2.png'
+  '/images/product4.png',
+  '/images/product5.png',
+  '/images/product6.png'
 ];
 
 const Hero: React.FC = () => {
