@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
       amount: price * 100, // Razorpay takes amount in paise
       currency: "INR",
       name: "Pop & Pout",
-      description: `${packType === 'single' ? 'Individual' : 'Duo'} Pack - 2-in-1 Trimmer`,
+      description: `${packType === 'single' ? 'Individual' : 'Duo'} Pack - Pop & Pout Trimmer`,
       image: "/images/hero1.png",
       handler: function (response: any) {
         alert("Payment Successful! Order ID: " + response.razorpay_payment_id);
