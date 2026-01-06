@@ -6,7 +6,7 @@ const Comparison: React.FC = () => {
   const comparisonData = [
     { label: 'Adjustable LED Light', v: true, o: false },
     { label: 'USB Rechargeable', v: true, o: false },
-    { label: '2-in-1 Head System', v: true, o: false },
+    { label: 'Precise Head System', v: true, o: false },
     { label: 'Painless Micro-Blades', v: true, o: false },
     { label: 'Dermatologically Safe', v: true, o: false }
   ];
@@ -59,7 +59,7 @@ const Comparison: React.FC = () => {
           {/* Footer Branding */}
           <div className="bg-[#FAFAFA] py-4 md:py-6 px-4 md:px-8 border-t border-gray-100 flex items-center justify-center gap-2 md:gap-3">
             <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#6B21A8] rounded-full animate-pulse"></div>
-            <span className="text-[8px] md:text-sm font-black text-gray-400 uppercase tracking-[0.2em] md:tracking-[0.3em]">Precision Grooming Standard 2025</span>
+            <span className="text-[8px] md:text-sm font-black text-gray-400 uppercase tracking-[0.2em] md:tracking-[0.3em]">Precision Grooming Standard 2026</span>
           </div>
         </div>
       </div>
