@@ -59,7 +59,7 @@ function App() {
               Trusted by 50,000+ Indian women. Get yours today with our exclusive Duo Pack offer!
             </p>
             <button onClick={scrollToHero} className="bg-white text-[#6B21A8] px-12 py-5 rounded-2xl font-bold text-xl hover:bg-purple-50 transition-all transform hover:scale-105 shadow-2xl uppercase tracking-widest">
-              BUY NOW - ₹499
+              BUY NOW - ₹399
             </button>
           </div>
         </section>
