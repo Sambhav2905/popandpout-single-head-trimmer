@@ -114,7 +114,7 @@ const Hero: React.FC = () => {
                <Zap className="w-3 h-3 fill-current" /> India's Most Loved Grooming Tool
              </div>
              <h1 className="text-4xl md:text-5xl font-bold font-serif leading-tight text-[#1A1A1A]">
-               Pop & Pout <span className="text-[#6B21A8]">2-in-1</span> Trimmer
+               Pop & Pout <span className="text-[#6B21A8]"></span> Trimmer
              </h1>
              <div className="flex items-center gap-2 mt-4">
               <div className="flex text-yellow-400">
