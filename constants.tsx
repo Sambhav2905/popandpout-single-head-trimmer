@@ -97,7 +97,7 @@ export const FAQS: FAQItem[] = [
   },
   {
     question: "Can I use it on other parts of my face?",
-    answer: "Absolutely. The 2-in-1 design includes a head for eyebrows and a wider head for upper lips, chin, and cheeks."
+    answer: "Absolutely. Our design is safe for eyebrows, upper lips, chin, and cheeks."
   },
   {
     question: "Is it waterproof?",
@@ -135,7 +135,7 @@ export const FEATURES = [
   },
   { 
     title: 'Painless Precision', 
-    desc: 'Say goodbye to redness and tears. Our 2-in-1 system offers a gentle glide for sensitive skin.', 
+    desc: 'Say goodbye to redness and tears. Our precise system offers a gentle glide for sensitive skin.', 
     img: 'images/model closeup eyebrow.png',
     icon: <Heart className="w-7 h-7" />
   },
