@@ -38,6 +38,7 @@ const Hero: React.FC = () => {
 
   // --- RAZORPAY PAYMENT LOGIC ---
   const handlePayment = () => {
+    // UPDATED PRICE LOGIC
     const price = packType === 'single' ? 399 : 649;
     
     const options = {
@@ -49,7 +50,6 @@ const Hero: React.FC = () => {
       image: "/images/hero1.png",
       handler: function (response: any) {
         alert("Payment Successful! Order ID: " + response.razorpay_payment_id);
-        // You can redirect to a success page here
       },
       prefill: {
         name: "",
@@ -131,11 +131,12 @@ const Hero: React.FC = () => {
           {/* Pricing Card */}
           <div className="bg-gray-50/50 rounded-3xl p-6 border border-gray-100 mb-8 relative overflow-hidden">
             <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-5xl font-black text-[#6B21A8] tracking-tighter">₹{packType === 'single' ? '499' : '749'}</span>
+              {/* UPDATED UI PRICE */}
+              <span className="text-5xl font-black text-[#6B21A8] tracking-tighter">₹{packType === 'single' ? '399' : '649'}</span>
               <div className="flex flex-col">
                 <span className="text-xl text-gray-400 line-through font-medium">₹{packType === 'single' ? '1,499' : '2,998'}</span>
                 <span className="inline-flex bg-[#6B21A8] text-white px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg">
-                  SAVE {packType === 'single' ? '67%' : '75%'}
+                  SAVE {packType === 'single' ? '73%' : '78%'}
                 </span>
               </div>
             </div>
@@ -160,9 +161,9 @@ const Hero: React.FC = () => {
             >
               <div>
                 <p className="font-bold text-[#1A1A1A] text-lg">Individual Pack</p>
-                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Buy 1 at ₹499</p>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Buy 1 at ₹399</p>
               </div>
-              <p className="font-black text-xl text-[#1A1A1A]">₹499</p>
+              <p className="font-black text-xl text-[#1A1A1A]">₹399</p>
             </button>
 
             <button 
@@ -176,9 +177,9 @@ const Hero: React.FC = () => {
               </div>
               <div>
                 <p className="font-bold text-[#1A1A1A] text-lg">Duo Pack (Set of 2)</p>
-                <p className="text-xs text-[#6B21A8] font-black uppercase tracking-wider">₹375 per unit</p>
+                <p className="text-xs text-[#6B21A8] font-black uppercase tracking-wider">Only ₹325 per unit</p>
               </div>
-              <p className="font-black text-xl text-[#1A1A1A]">₹749</p>
+              <p className="font-black text-xl text-[#1A1A1A]">₹649</p>
             </button>
           </div>
 
