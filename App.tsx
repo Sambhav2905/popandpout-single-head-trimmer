@@ -45,7 +45,7 @@ function App() {
               onClick={() => openCheckout('duo')} 
               className="bg-white text-[#6B21A8] px-12 py-5 rounded-2xl font-bold text-xl hover:bg-purple-50 transition-all transform hover:scale-105 shadow-2xl uppercase tracking-widest"
             >
-              BUY NOW - ₹500
+              BUY NOW - ₹299
             </button>
           </div>
         </section>
