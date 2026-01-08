@@ -1,94 +1,75 @@
 import React, { useState } from 'react';
-import { X, Check, ShieldCheck } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  packType: 'single' | 'duo';
-}
+interface Props { isOpen: boolean; onClose: () => void; packType: 'single' | 'duo'; }
 
 const CheckoutModal: React.FC<Props> = ({ isOpen, onClose, packType }) => {
-  const [orderData, setOrderData] = useState({ name: '', phone: '', address: '', pincode: '', city: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', address: '', pincode: '', city: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
-  const RAZORPAY_KEY = "rzp_live_S0YispXD1jHCAR";
-  const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzRV9BBd1rdZTHkVsV9qIp5O1MtY3a9Sz2quyXEk1ak9w0Q2NuqSeZjMJzgPRVdXLhH/exec";
+  if (!isOpen) return null;
 
   const price = packType === 'single' ? 299 : 500;
   const prepaidPrice = Math.round(price * 0.9);
 
-  // STRICT VALIDATION
-  const isFormValid = 
-    orderData.name.trim().length > 2 && 
-    /^[6-9]\d{9}$/.test(orderData.phone) && // Validates 10-digit Indian Mobile
-    orderData.address.trim().length > 10 && 
-    orderData.city.trim().length > 2 &&
-    orderData.pincode.trim().length === 6;
+  // SIMPLE BUT STRICT VALIDATION
+  const isReady = formData.name.length > 2 && formData.phone.length === 10 && formData.address.length > 5 && formData.pincode.length === 6;
 
-  const saveOrder = async (id: string, type: string, finalPrice: number) => {
+  const handleOrder = async (payType: string, finalAmt: number) => {
     setStatus('loading');
-    const data = { ...orderData, orderId: id, paymentType: type, amount: finalPrice, product: packType === 'single' ? '1x Trimmer' : '2x Trimmer' };
-    try {
-      await fetch(GOOGLE_SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+    const data = { ...formData, paymentType: payType, amount: finalAmt, product: packType, orderId: payType === 'COD' ? 'COD-PENDING' : 'PREPAID-INIT' };
+    
+    // Using your exact URL
+    await fetch("https://script.google.com/macros/s/AKfycbzRV9BBd1rdZTHkVsV9qIp5O1MtY3a9Sz2quyXEk1ak9w0Q2NuqSeZjMJzgPRVdXLhH/exec", {
+      method: 'POST', mode: 'no-cors', body: JSON.stringify(data)
+    });
+
+    if (payType === 'PREPAID') {
+      const options = {
+        key: "rzp_live_S0YispXD1jHCAR",
+        amount: finalAmt * 100,
+        currency: "INR",
+        name: "Pop & Pout",
+        prefill: { name: formData.name, contact: formData.phone },
+        theme: { color: "#6B21A8" },
+        handler: () => setStatus('success')
+      };
+      new (window as any).Razorpay(options).open();
+    } else {
       setStatus('success');
-    } catch (e) { setStatus('success'); }
+    }
   };
-
-  const handlePrepaid = () => {
-    const options = {
-      key: RAZORPAY_KEY,
-      amount: prepaidPrice * 100,
-      currency: "INR",
-      name: "Pop & Pout",
-      handler: (res: any) => saveOrder(res.razorpay_payment_id, 'PREPAID', prepaidPrice),
-      prefill: { name: orderData.name, contact: orderData.phone },
-      theme: { color: "#6B21A8" }
-    };
-    new (window as any).Razorpay(options).open();
-  };
-
-  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="bg-white rounded-[40px] p-8 w-full max-w-md relative shadow-2xl overflow-y-auto max-h-[95vh]">
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/80 px-4 py-6 overflow-y-auto">
+      <div className="bg-white w-full max-w-md rounded-[32px] p-6 relative shadow-2xl my-auto">
         {status === 'success' ? (
-          <div className="text-center py-10">
-            <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6"><Check size={40} strokeWidth={3}/></div>
-            <h3 className="text-2xl font-bold font-serif mb-2">Order Confirmed!</h3>
-            <p className="text-gray-500 mb-8">We'll WhatsApp you shortly.</p>
-            <button onClick={onClose} className="w-full bg-black text-white py-4 rounded-2xl font-bold">Back to Store</button>
+          <div className="text-center py-8">
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4"><Check size={32}/></div>
+            <h3 className="text-2xl font-bold mb-6">Order Placed!</h3>
+            <button onClick={onClose} className="w-full bg-black text-white py-4 rounded-xl font-bold uppercase tracking-widest">Back to Store</button>
           </div>
         ) : (
           <>
-            <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-black"><X /></button>
-            <h3 className="text-2xl font-bold mb-6 font-serif">Delivery Details</h3>
+            <button onClick={onClose} className="absolute top-4 right-4 p-2 text-gray-400"><X /></button>
+            <h3 className="text-xl font-bold mb-6 font-serif">Delivery Details</h3>
             <div className="space-y-4">
-              <input type="text" placeholder="Full Name" className="w-full border rounded-xl p-4 outline-none focus:ring-2 ring-purple-200" onChange={e => setOrderData({...orderData, name: e.target.value})} />
-              <input type="tel" maxLength={10} placeholder="10-Digit Mobile Number" className="w-full border rounded-xl p-4 outline-none focus:ring-2 ring-purple-200" onChange={e => setOrderData({...orderData, phone: e.target.value})} />
-              <textarea placeholder="House No, Street, Area" className="w-full border rounded-xl p-4 h-24 outline-none focus:ring-2 ring-purple-200 resize-none" onChange={e => setOrderData({...orderData, address: e.target.value})} />
+              <input type="text" placeholder="Full Name" className="w-full border border-gray-200 rounded-xl p-4 text-base" onChange={e => setFormData({...formData, name: e.target.value})} />
+              <input type="tel" inputMode="tel" maxLength={10} placeholder="Mobile Number" className="w-full border border-gray-200 rounded-xl p-4 text-base" onChange={e => setFormData({...formData, phone: e.target.value})} />
+              <textarea placeholder="Complete Address" className="w-full border border-gray-200 rounded-xl p-4 h-24 text-base" onChange={e => setFormData({...formData, address: e.target.value})} />
               <div className="flex gap-2">
-                <input type="text" placeholder="City" className="w-1/2 border rounded-xl p-4 outline-none focus:ring-2 ring-purple-200" onChange={e => setOrderData({...orderData, city: e.target.value})} />
-                <input type="tel" maxLength={6} placeholder="Pincode" className="w-1/2 border rounded-xl p-4 outline-none focus:ring-2 ring-purple-200" onChange={e => setOrderData({...orderData, pincode: e.target.value})} />
+                <input type="text" placeholder="City" className="w-1/2 border border-gray-200 rounded-xl p-4 text-base" onChange={e => setFormData({...formData, city: e.target.value})} />
+                <input type="tel" inputMode="numeric" maxLength={6} placeholder="Pincode" className="w-1/2 border border-gray-200 rounded-xl p-4 text-base" onChange={e => setFormData({...formData, pincode: e.target.value})} />
               </div>
             </div>
-
             <div className="mt-8 space-y-3">
-              <button 
-                disabled={!isFormValid || status === 'loading'}
-                onClick={handlePrepaid} 
-                className={`w-full py-5 rounded-2xl font-black text-white transition-all ${isFormValid ? 'bg-[#6B21A8] shadow-lg shadow-purple-200' : 'bg-gray-300 cursor-not-allowed'}`}
-              >
-                {status === 'loading' ? 'Processing...' : `PAY ONLINE - ₹${prepaidPrice} (10% OFF)`}
+              <button disabled={!isReady || status === 'loading'} onClick={() => handleOrder('PREPAID', prepaidPrice)} className={`w-full py-5 rounded-2xl font-black text-white ${isReady ? 'bg-[#6B21A8] shadow-lg' : 'bg-gray-300'}`}>
+                {status === 'loading' ? 'Processing...' : `PAY ONLINE - ₹${prepaidPrice}`}
               </button>
-              <button 
-                disabled={!isFormValid || status === 'loading'}
-                onClick={() => saveOrder('COD-PENDING', 'COD', price)} 
-                className={`w-full py-4 rounded-2xl font-bold transition-all ${isFormValid ? 'bg-white text-black border-2 border-gray-100' : 'bg-gray-50 text-gray-300 cursor-not-allowed'}`}
-              >
+              <button disabled={!isReady || status === 'loading'} onClick={() => handleOrder('COD', price)} className={`w-full py-4 rounded-2xl font-bold border-2 ${isReady ? 'bg-white text-black' : 'bg-gray-50 text-gray-300'}`}>
                 CASH ON DELIVERY - ₹{price}
               </button>
-              {!isFormValid && <p className="text-[10px] text-center text-red-400 font-bold uppercase tracking-widest mt-2">Fill all fields to unlock payment</p>}
+              {!isReady && <p className="text-[10px] text-center text-gray-400 uppercase font-bold tracking-widest">Complete form to unlock buttons</p>}
             </div>
           </>
         )}
@@ -96,5 +77,4 @@ const CheckoutModal: React.FC<Props> = ({ isOpen, onClose, packType }) => {
     </div>
   );
 };
-
 export default CheckoutModal;
